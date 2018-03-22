@@ -1,3 +1,3 @@
 # JobskubeSocial
 
-Backend for getting auth_tokens & Data from LinkedIn and GitHub as of now.
+Backend for getting auth_tokens & Data from LinkedIn,GitHub & Stackoverflow as of now.
