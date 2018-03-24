@@ -1,2 +1,28 @@
 server:
   port: 8150
+
+google:
+  token_url: https://accounts.google.com/o/oauth2/token
+  client_id: 16005081426-k9irnocljp0oho5n4f2abfrfktovlg3b.apps.googleusercontent.com
+  client_secret: o-S-PazKhekorhetu-NSr7FK
+  grant_type: authorization_code
+  redirect_uri: http://jobskube.com/callback/google
+
+github:
+  token_url: https://github.com/login/oauth/access_token
+  client_id: c5cca39ee7744cca0cab
+  client_secret: d8999ef024cc18cdd53a26b02278547ee0b840f0
+
+linkedin:
+  token_url: https://www.linkedin.com/oauth/v2/accessToken
+  client_id: 81xtk6xgkoswse
+  client_secret: AqKa8BnR4xHNniC5
+  grant_type: authorization_code
+  redirect_uri: http://localhost:3000/callback/linkedin
+  
+stackoverflow:
+  token_url: https://stackoverflow.com/oauth/access_token/json
+  client_id: 12098
+  client_secret: DNL6D4BG*pmgdyJgQ0IlSw((
+  redirect_uri: http://jobskube.com/callback/stackoverflow
+  key: ipVjbHPtJXI*UaOs2ri16w((

@@ -2,6 +2,7 @@ package com.jobskube.controller;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,19 +16,31 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping(value="linkedin")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://jobskube.com"})
 public class LinkedinController {
+	
+	@Value("${linkedin.client_id}")
+	private String client_id;
+	
+	@Value("${linkedin.client_secret}")
+	private String client_secret;
+	
+	@Value("${linkedin.grant_type}")
+	private String grant_type;
+	
+	@Value("${linkedin.token_url}")
+	private String token_url;
+	
+	@Value("${linkedin.redirect_uri}")
+	private String redirect_uri;
 	
 	@RequestMapping(value="accesstoken")
 	private ResponseEntity<String> getAccessToken(@RequestParam String code) {
-		String url = "https://www.linkedin.com/oauth/v2/accessToken?", token="";
+		String token="";
 		HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
-		String params = "client_id=81xtk6xgkoswse"
-				+ "&client_secret=AqKa8BnR4xHNniC5"
-				+ "&grant_type=authorization_code"
-				+ "&redirect_uri=http://localhost:3000/callback/linkedin"
-				+ "&code=" + code;
-		ResponseEntity<Map> response = new RestTemplate().getForEntity(url+params,Map.class);
+		String params = "?client_id=" + client_id + "&client_secret="+client_secret
+				+ "&grant_type="+grant_type + "&redirect_uri="+redirect_uri + "&code=" + code;
+		ResponseEntity<Map> response = new RestTemplate().getForEntity(token_url+params,Map.class);
 		if(response.getBody().containsKey("access_token")) {
 			token = (String) response.getBody().get("access_token");
 			httpStatus = HttpStatus.OK;

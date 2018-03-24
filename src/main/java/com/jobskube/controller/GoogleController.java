@@ -2,6 +2,7 @@ package com.jobskube.controller;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,23 +22,39 @@ import org.springframework.web.client.RestTemplate;
 @CrossOrigin(origins = {"http://localhost:3000", "http://jobskube.com"})
 public class GoogleController {
 	
+	@Value("${google.client_id}")
+	private String client_id;
+	
+	@Value("${google.client_secret}")
+	private String client_secret;
+	
+	@Value("${google.grant_type}")
+	private String grant_type;
+	
+	@Value("${google.token_url}")
+	private String token_url;
+	
+	@Value("${google.redirect_uri}")
+	private String redirect_uri;
+	
 	@RequestMapping(value="accesstoken")
 	private ResponseEntity<String> getAccessToken(@RequestParam String code) {
-		String url = "https://accounts.google.com/o/oauth2/token", token="";
+	
+		String token="";
 		HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
 		MultiValueMap<String, String> payload = new LinkedMultiValueMap<String,String>();
-	    payload.add("client_id", "16005081426-k9irnocljp0oho5n4f2abfrfktovlg3b.apps.googleusercontent.com");
-	    payload.add("client_secret", "o-S-PazKhekorhetu-NSr7FK");
+	    payload.add("client_id", client_id);
+	    payload.add("client_secret",client_secret);
 	    payload.add("code", code);
-	    payload.add("grant_type", "authorization_code");
-	    payload.add("redirect_uri", "http://jobskube.com/callback/google");
-				
+	    payload.add("grant_type", grant_type);
+	    payload.add("redirect_uri",redirect_uri);
+
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		
+
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<MultiValueMap<String, String>>(payload, headers);
-        
-        ResponseEntity<Map> response = new RestTemplate().postForEntity( url, entity , Map.class );
+
+        ResponseEntity<Map> response = new RestTemplate().postForEntity( token_url, entity , Map.class );
 		if(response.getBody().containsKey("access_token")) {
 			token = (String) response.getBody().get("access_token");
 			httpStatus = HttpStatus.OK;

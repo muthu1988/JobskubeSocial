@@ -3,6 +3,7 @@ package com.jobskube.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,19 +15,28 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping(value="github")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://jobskube.com"})
 public class GithubController {
+	
+	@Value("${github.client_id}")
+	private String client_id;
+	
+	@Value("${github.client_secret}")
+	private String client_secret;
+	
+	@Value("${github.token_url}")
+	private String token_url;
 	
 	@RequestMapping(value="accesstoken")
 	private ResponseEntity<String> getAccessToken(@RequestParam String code) {
-		String url = "https://github.com/login/oauth/access_token", token="";
+		String token="";
 		HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
 		Map<String, String> payload = new HashMap<String,String>();
-	    payload.put("client_id", "c5cca39ee7744cca0cab");
-	    payload.put("client_secret", "d8999ef024cc18cdd53a26b02278547ee0b840f0");
+	    payload.put("client_id", client_id);
+	    payload.put("client_secret", client_secret);
 	    payload.put("code", code);
 		HttpEntity<Map<String, String>> request = new HttpEntity<Map<String, String>>(payload);
-		ResponseEntity<String> response = new RestTemplate().postForEntity(url, request, String.class);
+		ResponseEntity<String> response = new RestTemplate().postForEntity(token_url, request, String.class);
 		if(response.getBody().contains("access_token=")) {
 			token = response.getBody().split("&scope")[0].replace("access_token=", "");
 			httpStatus = HttpStatus.OK;
