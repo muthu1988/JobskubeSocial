@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -35,7 +36,7 @@ public class StackOverFlowController {
 	@Value("${stackoverflow.key}")
 	private String key;
 	
-	@RequestMapping(value="accesstoken")
+	@RequestMapping(value="accesstoken", method=RequestMethod.GET)
 	private ResponseEntity<String> getAccessToken(@RequestParam String code) {
 		String token="";
 		HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
@@ -53,7 +54,7 @@ public class StackOverFlowController {
 		return new ResponseEntity<String>(token, httpStatus);
 	}
 
-	@RequestMapping(value="getdata")
+	@RequestMapping(value="getdata", method=RequestMethod.GET)
 	private ResponseEntity<Object> getData(@RequestParam String token) {
 		String url = "https://api.stackexchange.com/2.2/me?site=stackoverflow&access_token="+token+"&key="+key;
 		HttpStatus httpStatus = HttpStatus.OK;

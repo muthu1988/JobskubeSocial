@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -34,7 +35,7 @@ public class LinkedinController {
 	@Value("${linkedin.redirect_uri}")
 	private String redirect_uri;
 	
-	@RequestMapping(value="accesstoken")
+	@RequestMapping(value="accesstoken", method=RequestMethod.GET)
 	private ResponseEntity<String> getAccessToken(@RequestParam String code) {
 		String token="";
 		HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
@@ -48,7 +49,7 @@ public class LinkedinController {
 		return new ResponseEntity<String>(token, httpStatus);
 	}
 	
-	@RequestMapping(value="getdata")
+	@RequestMapping(value="getdata", method=RequestMethod.GET)
 	private ResponseEntity<Object> getData(@RequestParam String token) {
 		String url = "https://api.linkedin.com/v1/people/~?format=json";
 		HttpStatus httpStatus = HttpStatus.OK;

@@ -9,9 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import io.swagger.models.HttpMethod;
 
 @RestController
 @RequestMapping(value="github")
@@ -27,7 +30,7 @@ public class GithubController {
 	@Value("${github.token_url}")
 	private String token_url;
 	
-	@RequestMapping(value="accesstoken")
+	@RequestMapping(value="accesstoken", method=RequestMethod.GET)
 	private ResponseEntity<String> getAccessToken(@RequestParam String code) {
 		String token="";
 		HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
@@ -44,7 +47,7 @@ public class GithubController {
 		return new ResponseEntity<String>(token, httpStatus);
 	}
 	
-	@RequestMapping(value="getdata")
+	@RequestMapping(value="getdata", method=RequestMethod.GET)
 	private ResponseEntity<Object> getData(@RequestParam String token) {
 		String url = "https://api.github.com/user?access_token="+token;
 		HttpStatus httpStatus = HttpStatus.OK;

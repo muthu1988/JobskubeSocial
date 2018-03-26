@@ -13,6 +13,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -37,7 +38,7 @@ public class GoogleController {
 	@Value("${google.redirect_uri}")
 	private String redirect_uri;
 	
-	@RequestMapping(value="accesstoken")
+	@RequestMapping(value="accesstoken", method=RequestMethod.GET)
 	private ResponseEntity<String> getAccessToken(@RequestParam String code) {
 	
 		String token="";
@@ -62,7 +63,7 @@ public class GoogleController {
 		return new ResponseEntity<String>(token, httpStatus);
 	}
 	
-	@RequestMapping(value="getdata")
+	@RequestMapping(value="getdata", method=RequestMethod.GET)
 	private ResponseEntity<Object> getData(@RequestParam String token) {
 		String url = "https://www.googleapis.com/userinfo/v2/me";
 		HttpStatus httpStatus = HttpStatus.OK;
